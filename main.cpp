@@ -57,7 +57,7 @@ public:
 
         // Set up the main window
         setLayout(layout);
-        setWindowTitle("Linux App Store");
+        setWindowTitle("SpoinkStore");
     }
 
 public slots:
@@ -108,7 +108,6 @@ public slots:
 
         QUrl apiUrl("https://api.snapcraft.io/v2/snaps/info/" + appName);
         QNetworkRequest request(apiUrl);
-        request.setRawHeader("Authorization", "YOUR_SNAP_STORE_API_KEY");
 
         manager->get(request);
     }
