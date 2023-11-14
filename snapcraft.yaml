@@ -8,15 +8,15 @@ grade: stable
 confinement: strict
 
 apps:
-  linux-app-store:
-    command: desktop-launch $SNAP/linux-app-store
+  spoinkstore:
+    command: desktop-launch $SNAP/spoinkstore
     plugs:
       - network
       - home
       - removable-media
 
 parts:
-  linux-app-store:
+  spoinkstore:
     plugin: qmake
     source: .
     build-packages:
