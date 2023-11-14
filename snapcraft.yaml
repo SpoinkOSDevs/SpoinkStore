@@ -44,4 +44,4 @@ parts:
   desktop/qt5:
     plugin: nil
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: qt5
+    source-subdir: qt
