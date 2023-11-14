@@ -10,6 +10,8 @@ confinement: strict
 apps:
   spoinkstore:
     command: desktop-launch $SNAP/spoinkstore
+    environment:
+      QML2_IMPORT_PATH: "$QML2_IMPORT_PATH:$SNAP/usr/qml"
     plugs:
       - network
       - home
@@ -26,3 +28,7 @@ parts:
     stage-packages:
       - libqt5network5
       - libqt5widgets5
+
+    after: [desktop/qt5]
+    override-build: |
+      make INSTALL_ROOT=$SNAPCRAFT_PART_INSTALL install
