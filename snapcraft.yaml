@@ -33,14 +33,6 @@ parts:
     override-build: |
       make INSTALL_ROOT=$SNAPCRAFT_PART_INSTALL install
 
-    build-environment:
-      - |
-        export LIBS+=" -L$SNAPCRAFT_PART_INSTALL/lib"
-        export LIBS+=" -L$SNAPCRAFT_PART_INSTALL/usr/lib"
-        export LIBS+=" -L$SNAPCRAFT_PART_INSTALL/lib/x86_64-linux-gnu"
-        export LIBS+=" -L$SNAPCRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu"
-        export INCLUDEPATH+=" -I$SNAPCRAFT_PART_INSTALL/usr/include"
-
   desktop/qt5:
     plugin: nil
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
