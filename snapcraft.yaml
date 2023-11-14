@@ -1,0 +1,28 @@
+name: spoinkstore
+version: '1.0'
+summary: Spoink OS's Store
+description: |
+  Spoink OS's Store
+
+grade: stable
+confinement: strict
+
+apps:
+  linux-app-store:
+    command: desktop-launch $SNAP/linux-app-store
+    plugs:
+      - network
+      - home
+      - removable-media
+
+parts:
+  linux-app-store:
+    plugin: qmake
+    source: .
+    build-packages:
+      - qtbase5-dev
+      - libqt5network5
+      - libqt5widgets5
+    stage-packages:
+      - libqt5network5
+      - libqt5widgets5
