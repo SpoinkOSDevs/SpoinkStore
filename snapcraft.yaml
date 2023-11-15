@@ -17,7 +17,3 @@ parts:
   spoinkstore:
     plugin: make
     source: .
-    build-packages:
-      - libcurl4-openssl-dev  # Add other necessary build packages
-    stage-packages:
-      - libcurl4  # Add other necessary runtime packages
