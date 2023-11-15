@@ -15,7 +15,10 @@ OBJ := $(SRC:.c=.o)
 # Target executable
 TARGET := spoinkstore
 
-.PHONY: all clean
+# Installation directory
+INSTALL_DIR := /usr/local/bin
+
+.PHONY: all clean install
 
 all: $(TARGET)
 
@@ -24,6 +27,9 @@ $(TARGET): $(OBJ)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
+
+install: $(TARGET)
+	install -D -m 755 $(TARGET) $(DESTDIR)$(INSTALL_DIR)/$(TARGET)
 
 clean:
 	rm -f $(OBJ) $(TARGET)
