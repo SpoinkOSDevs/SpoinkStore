@@ -7,9 +7,7 @@ confinement: strict
 
 apps:
   spoinkstore:
-    command: desktop-launch $SNAP/spoinkstore
-    environment:
-      QML2_IMPORT_PATH: "$QML2_IMPORT_PATH:$SNAP/usr/qml"
+    command: spoinkstore
     plugs:
       - network
       - home
@@ -17,27 +15,9 @@ apps:
 
 parts:
   spoinkstore:
-    plugin: qmake
+    plugin: make
     source: .
     build-packages:
-      - qtbase5-dev
-      - libqt5network5
-      - libqt5widgets5
-      - qtbase5-dev-tools  # Added for development tools
+      - libcurl4-openssl-dev  # Add other necessary build packages
     stage-packages:
-      - libqt5network5
-      - libqt5widgets5
-      - libqt5multimedia5  # Add more packages as needed
-
-    after: [desktop/qt5]
-    build-environment:
-      - LIBS+=" -L$SNAPCRAFT_PART_INSTALL/lib"
-      - LIBS+=" -L$SNAPCRAFT_PART_INSTALL/usr/lib"
-      - LIBS+=" -L$SNAPCRAFT_PART_INSTALL/lib/x86_64-linux-gnu"
-      - LIBS+=" -L$SNAPCRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu"
-      - INCLUDEPATH+=" -I$SNAPCRAFT_PART_INSTALL/usr/include"
-
-  desktop/qt5:
-    plugin: nil
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: qt5
+      - libcurl4  # Add other necessary runtime packages
