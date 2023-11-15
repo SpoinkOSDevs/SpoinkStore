@@ -20,7 +20,7 @@ Make sure you have the following dependencies installed:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/SpoinkStore/SpoinkStore.git
+    git clone https://github.com/SpoinkOSDevs/SpoinkStore.git
     ```
 
 2. Navigate to the project directory:
