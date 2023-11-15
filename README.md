@@ -4,7 +4,7 @@ SpoinkStore is a command-line utility for managing software installations on Spo
 
 ## Features
 
-- **Installation**: Easily install software packages from the Spoink OS repository.
+- **Installation**: Easily install software packages from the Snap repository.
 - **Customization**: Tailor your Spoink OS experience with the apps you need.
 
 ## Getting Started
