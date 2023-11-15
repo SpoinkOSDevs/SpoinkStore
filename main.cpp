@@ -1,156 +1,60 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cstdlib>
 
-#include <QApplication>
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QListWidget>
-#include <QPushButton>
-#include <QLabel>
-#include <QLineEdit>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QJsonArray>
-#include <QProcess>
-#include <QUrl>
-
-class AppStore : public QWidget {
-    Q_OBJECT
-
+class SnapStore {
 public:
-    AppStore(QWidget *parent = nullptr) : QWidget(parent) {
-        // Set up the main layout
-        QVBoxLayout *layout = new QVBoxLayout(this);
-
-        // Create a list widget to display apps
-        appList = new QListWidget(this);
-
-        // Create a label for displaying app details
-        appDetailsLabel = new QLabel("App Details:", this);
-
-        // Create a line edit for manual app entry
-        appEntryLineEdit = new QLineEdit(this);
-        appEntryLineEdit->setPlaceholderText("Enter App Name");
-
-        // Create a button to fetch and display apps
-        QPushButton *fetchButton = new QPushButton("Fetch Apps", this);
-
-        // Connect button click to fetchApps slot
-        connect(fetchButton, &QPushButton::clicked, this, &AppStore::fetchApps);
-
-        // Create a button to install the selected app
-        installButton = new QPushButton("Install App", this);
-        installButton->setEnabled(false);
-
-        // Connect button click to installApp slot
-        connect(installButton, &QPushButton::clicked, this, &AppStore::installApp);
-
-        // Add widgets to the layout
-        layout->addWidget(appList);
-        layout->addWidget(appEntryLineEdit);
-        layout->addWidget(fetchButton);
-        layout->addWidget(appDetailsLabel);
-        layout->addWidget(installButton);
-
-        // Set up dark mode stylesheet
-        setStyleSheet("background-color: #333; color: #fff;");
-
-        // Set up the main window
-        setLayout(layout);
-        setWindowTitle("SpoinkStore");
+    void displayMenu() {
+        std::cout << "SpoinkStore Menu:" << std::endl;
+        std::cout << "1. Install a Snap" << std::endl;
+        std::cout << "2. Exit" << std::endl;
     }
 
-public slots:
-    // Slot to handle fetching apps from Snap
-    void fetchApps() {
-        // Clear existing items
-        appList->clear();
+    void installSnap(const std::string& snapName) {
+        std::cout << "Installing snap: " << snapName << std::endl;
 
-        // Run the snap find command to get available snaps
-        QProcess process;
-        process.start("snap", QStringList() << "find");
+        // Use the snap command to install the snap
+        std::string installCommand = "sudo snap install " + snapName;
 
-        // Wait for the process to finish
-        process.waitForFinished();
+        int result = std::system(installCommand.c_str());
 
-        // Read the output of the process
-        QString output = process.readAllStandardOutput();
-
-        // Split the output into lines and add each line as an app
-        QStringList lines = output.split('\n', Qt::SkipEmptyParts);
-        appList->addItems(lines);
-
-        // Enable the install button
-        installButton->setEnabled(true);
-    }
-
-    // Slot to handle installing the selected app
-    void installApp() {
-        if (appList->currentItem()) {
-            QString appName = appList->currentItem()->text();
-            QMessageBox::information(this, "Installation", "Installing " + appName);
-
-            // Run the snap install command to install the selected app
-            QProcess process;
-            process.startDetached("snap", QStringList() << "install" << appName);
+        if (result == 0) {
+            std::cout << "Installation completed successfully!" << std::endl;
         } else {
-            QMessageBox::warning(this, "Installation", "Please fetch apps and select an app to install.");
+            std::cerr << "Installation failed. Check the snap name and try again." << std::endl;
         }
     }
 
-    // Slot to fetch app details when a new app is selected
-    void getAppDetails(QListWidgetItem *item) {
-        QString appName = item->text();
+    void run() {
+        while (true) {
+            displayMenu();
+            int choice;
+            std::cout << "Enter your choice (1-2): ";
+            std::cin >> choice;
 
-        // Use the Snap Store API to get app details asynchronously
-        QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-        connect(manager, &QNetworkAccessManager::finished, this, &AppStore::handleNetworkReply);
-
-        QUrl apiUrl("https://api.snapcraft.io/v2/snaps/info/" + appName);
-        QNetworkRequest request(apiUrl);
-
-        manager->get(request);
-    }
-
-    // Slot to handle the network reply for app details
-    void handleNetworkReply(QNetworkReply *reply) {
-        if (reply->error() == QNetworkReply::NoError) {
-            // Parse the JSON response
-            QByteArray data = reply->readAll();
-            QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
-            QJsonObject jsonObj = jsonDoc.object();
-
-            // Extract and display app details
-            QString title = jsonObj["title"].toString();
-            QString description = jsonObj["description"].toString();
-
-            appDetailsLabel->setText("App Details:\nTitle: " + title + "\nDescription: " + description);
-        } else {
-            appDetailsLabel->setText("App Details: Error fetching app details");
+            switch (choice) {
+                case 1: {
+                    std::string snapName;
+                    std::cout << "Enter the name of the snap to install: ";
+                    std::cin >> snapName;
+                    installSnap(snapName);
+                    break;
+                }
+                case 2: {
+                    std::cout << "Exiting SpoinkStore. Goodbye!" << std::endl;
+                    return;
+                }
+                default:
+                    std::cerr << "Invalid choice. Please enter a number between 1 and 2." << std::endl;
+            }
         }
-
-        reply->deleteLater();
     }
-
-    // Slot to update the install button state based on app selection
-    void updateInstallButtonState(QListWidgetItem *item) {
-        installButton->setEnabled(item != nullptr);
-    }
-
-private:
-    QListWidget *appList;
-    QLabel *appDetailsLabel;
-    QLineEdit *appEntryLineEdit;
-    QPushButton *installButton;
 };
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
+int main() {
+    SnapStore mySnapStore;
+    mySnapStore.run();
 
-    AppStore myAppStore;
-    myAppStore.show();
-
-    return app.exec();
+    return 0;
 }
-
-#include "main.moc"
