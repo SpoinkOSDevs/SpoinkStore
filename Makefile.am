@@ -23,13 +23,13 @@ INSTALL_DIR := /usr/local/bin
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-    $(CC) $(CFLAGS) -o $@ $^ `pkg-config --libs gtk+-3.0`
+	$(CC) $(CFLAGS) -o $@ $^ `pkg-config --libs gtk+-3.0`
 
 %.o: %.cpp
-    $(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 install: $(TARGET)
-    install -D -m 755 $(TARGET) $(DESTDIR)$(INSTALL_DIR)/$(TARGET)
+	install -D -m 755 $(TARGET) $(DESTDIR)$(INSTALL_DIR)/$(TARGET)
 
 clean:
-    rm -f $(OBJ) $(TARGET)
+	rm -f $(OBJ) $(TARGET)
