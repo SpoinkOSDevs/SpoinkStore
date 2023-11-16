@@ -4,7 +4,7 @@
 CC := g++
 
 # Compiler flags
-CFLAGS := -Wall -Wextra
+CFLAGS := -Wall -Wextra `pkg-config --cflags gtk+-3.0`
 
 # Source files
 SRC := main.cpp  # Add your source files here
@@ -23,13 +23,13 @@ INSTALL_DIR := /usr/local/bin
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^ -lQt5Widgets -lQt5Network
+    $(CC) $(CFLAGS) -o $@ $^ `pkg-config --libs gtk+-3.0`
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c -o $@ $<
+    $(CC) $(CFLAGS) -c -o $@ $<
 
 install: $(TARGET)
-	install -D -m 755 $(TARGET) $(DESTDIR)$(INSTALL_DIR)/$(TARGET)
+    install -D -m 755 $(TARGET) $(DESTDIR)$(INSTALL_DIR)/$(TARGET)
 
 clean:
-	rm -f $(OBJ) $(TARGET)
+    rm -f $(OBJ) $(TARGET)
