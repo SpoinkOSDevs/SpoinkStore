@@ -1,7 +1,6 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 #include <glib/gstdio.h>
-#include <json-glib/json-glib.h>  
 
 class AppStore {
 public:
@@ -28,7 +27,7 @@ public:
     gtk_container_foreach(GTK_CONTAINER(app->app_list), 
                           (GtkCallback)gtk_widget_destroy, NULL);
 
-    // Get list of available apps
+    // Get list of available snaps
     gchar *output = NULL;
     g_spawn_command_line_sync("snap find", &output, NULL, NULL, NULL);
     
@@ -36,11 +35,26 @@ public:
     for(int i = 0; lines[i]; i++) {
       GtkWidget *row = gtk_list_box_row_new();
       gtk_container_add(GTK_CONTAINER(row), gtk_label_new(lines[i]));
+
+      // Include install button for each snap
+      GtkWidget *install_button = gtk_button_new_with_label("Install");
+      g_signal_connect(install_button, "clicked", G_CALLBACK(install_snap), lines[i]);
+      gtk_container_add(GTK_CONTAINER(row), install_button);
+
       gtk_container_add(GTK_CONTAINER(app->app_list), row);
     }
 
     g_strfreev(lines);
     g_free(output);
+  }
+
+  static void install_snap(GtkWidget *widget, const gchar *snap) {
+    // Install the selected snap
+    gchar *install_command = g_strdup_printf("sudo snap install %s", snap);
+    g_spawn_command_line_async(install_command, NULL);
+    g_free(install_command);
+
+    // You can add additional logic, such as displaying a message, updating UI, etc.
   }
   
 private:
