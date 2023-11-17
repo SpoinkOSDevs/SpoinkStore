@@ -7,7 +7,7 @@ confinement: strict
 
 apps:
   spoinkstore:
-    command: bin/spoinkstore
+    command: usr/local/bin/spoinkstore
     plugs:
       - network
       - home
