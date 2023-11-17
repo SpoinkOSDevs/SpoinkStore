@@ -13,12 +13,9 @@ SRC := main.cpp  # Add your source files here
 OBJ := $(SRC:.cpp=.o)
 
 # Target executable
-TARGET := usr/local/bin/spoinkstore
+TARGET := spoinkstore
 
-# Installation directory
-INSTALL_DIR := /usr/local/bin
-
-.PHONY: all clean install
+.PHONY: all clean install uninstall
 
 all: $(TARGET)
 
@@ -29,7 +26,10 @@ $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 install: $(TARGET)
-	install -D -m 755 $(TARGET) $(DESTDIR)$(INSTALL_DIR)/$(TARGET)
+	install -D -m 755 $(TARGET) $(DESTDIR)/usr/local/bin/$(TARGET)
+
+uninstall:
+	rm -f $(DESTDIR)/usr/local/bin/$(TARGET)
 
 clean:
 	rm -f $(OBJ) $(TARGET)
