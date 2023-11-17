@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=SpoinkStore
+Comment=Install and manage snaps
+Exec=spoinkstore
+Icon=spoinkstore
+Terminal=false
+Type=Application
+Categories=Utility;
