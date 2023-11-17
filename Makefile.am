@@ -4,7 +4,7 @@
 CC := g++
 
 # Compiler flags
-CFLAGS := -Wall -Wextra `pkg-config --cflags gtk+-3.0`
+CFLAGS := -Wall -Wextra `pkg-config --cflags gtk+-3.0` `pkg-config --cflags json-glib-1.0`
 
 # Source files
 SRC := main.cpp  # Add your source files here
@@ -23,7 +23,7 @@ INSTALL_DIR := /usr/local/bin
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^ `pkg-config --libs gtk+-3.0`
+	$(CC) $(CFLAGS) -o $@ $^ `pkg-config --libs gtk+-3.0` `pkg-config --libs json-glib-1.0`
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c -o $@ $<
