@@ -6,7 +6,7 @@
         {
             "label": "make",
             "type": "shell",
-            "command": "./build.sh",
+            "command": "sudo ./build.sh",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
