@@ -13,7 +13,7 @@ SRC := main.cpp  # Add your source files here
 OBJ := $(SRC:.cpp=.o)
 
 # Target executable
-TARGET := spoinkstore
+TARGET := bin/spoinkstore
 
 # Installation directory
 INSTALL_DIR := /usr/local/bin
