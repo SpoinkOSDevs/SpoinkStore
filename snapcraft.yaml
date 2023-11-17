@@ -11,6 +11,7 @@ apps:
     command: spoinkstore
     plugs: [home, network, x11]
     desktop: spoinkstore.desktop
+
 parts:
   spoinkstore:
     source: .
@@ -19,5 +20,7 @@ parts:
       - build-essential
       - gtk-doc-tools
       - libgtk-3-dev
+      - libjson-glib-dev
     stage-packages:
       - libgtk-3-0
+      - libjson-glib-1.0-0
